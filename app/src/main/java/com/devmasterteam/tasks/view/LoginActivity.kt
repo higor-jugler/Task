@@ -1,8 +1,10 @@
 package com.devmasterteam.tasks.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.databinding.ActivityLoginBinding
@@ -33,10 +35,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == R.id.button_login)
-        handleLogin()
+            handleLogin()
     }
 
     private fun observe() {
+        viewModel.login.observe(this) {
+            if (it.status()) {
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(applicationContext, it.message(),Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun handleLogin() {
